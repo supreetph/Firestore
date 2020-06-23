@@ -17,7 +17,7 @@ namespace FirestoreDemo.Controllers
     {
         IFirebaseConfig config = new FirebaseConfig
         {
-            AuthSecret = "RuACwgmFjFnMGMGvLPNbqAwhJkZRmI9DTZqrkaE7",
+            AuthSecret = "",
             BasePath = "https://hip-voyager-241415.firebaseio.com"
             
 
