@@ -8,6 +8,8 @@ using FireSharp.Interfaces;
 using FireSharp.Response;
 using FirestoreDemo.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace FirestoreDemo.Controllers
 {
@@ -15,7 +17,7 @@ namespace FirestoreDemo.Controllers
     {
         IFirebaseConfig config = new FirebaseConfig
         {
-            AuthSecret = "",
+            AuthSecret = "RuACwgmFjFnMGMGvLPNbqAwhJkZRmI9DTZqrkaE7",
             BasePath = "https://hip-voyager-241415.firebaseio.com"
             
 
@@ -23,7 +25,16 @@ namespace FirestoreDemo.Controllers
         IFirebaseClient client;
         public IActionResult Index()
         {
-            return View();
+            client = new FirebaseClient(config);
+            var response = client.Get("People");
+            dynamic jResult = JsonConvert.DeserializeObject(response.Body);
+            var list = new List<People>();
+            foreach (var item in jResult)
+            {
+                list.Add(JsonConvert.DeserializeObject<People>(((JProperty)item).Value.ToString()));
+
+            }
+            return View(list);
         }
 
         [HttpPost]
@@ -38,6 +49,8 @@ namespace FirestoreDemo.Controllers
            
             return View();
         }
+
+        
 
         private void InsertData(People people)
         {
